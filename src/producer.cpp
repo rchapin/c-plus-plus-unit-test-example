@@ -1,11 +1,13 @@
-// #include <string>
 # include <iostream>
 #include <unistd.h>
+#include <sstream>
+#include <string.h>
 #include "../include/producer.hpp"
+#include "../include/data_entry.h"
 
 void producer::produce(size_t num_entries)
 {
-	std::cout << "produce..." << std::endl;
+	std::cout << "[" << id << "] " << "produce..." << std::endl;
 	if (!queue)
 	{
 		return;
@@ -22,16 +24,31 @@ void producer::produce(size_t num_entries)
 
 void producer::run()
 {
-	std::cout << "producer.run" << std::endl;
+	std::cout << "[" << id << "] " << "producer.run" << std::endl;
 	if (!queue)
 	{
 		return;
 	}
-	for (size_t i = 0; i < num_entries; ++i)
+
+	data_entry entry;
+	unsigned long counter = 0;
+
+	while (running)
 	{
-		queue->push(id);
-		usleep(100);
+		for (size_t i = 0; i < num_entries; ++i)
+		{
+			entry.id    = &id;
+			entry.count = ++counter;
+			queue->push(entry);
+			usleep(100);
+		}
+		sleep(2);
 	}
 }
 
 
+
+
+
+
+							      	

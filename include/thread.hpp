@@ -27,8 +27,13 @@ class thread
 		 */
 		virtual void run() = 0;
 
+		/**
+		 * Flag to enable us to shutdown a thread instance
+		 */
+		bool running;
+
 	public:
-		thread();
+		thread() : running(false) {}
 		virtual ~thread();
 
 		/**
@@ -41,6 +46,8 @@ class thread
 		 * pthread instance.
 		 */
 		void join();
+
+		void shutdown();
 };
 
 #endif

@@ -19,7 +19,7 @@ vpath %.hpp $(INC_DIR)
 vpath %.o $(BUILD_DIR)
 
 TARGET	= $(BIN_DIR)/cpp-unit-test-example
-OBJS	= cpp-unit-test-example.o thread.o mutex.o producer.o
+OBJS	= cpp-unit-test-example.o thread.o mutex.o producer.o consumer.o
 
 all: $(TARGET)
 
@@ -30,6 +30,9 @@ $(BUILD_DIR)/cpp-unit-test-example.o: cpp-unit-test-example.cpp
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/producer.o: producer.cpp producer.hpp
+	$(CC) $(CFLAGS) $< -o $@
+
+$(BUILD_DIR)/consumer.o: consumer.cpp consumer.hpp
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/thread.o: thread.cpp thread.hpp
