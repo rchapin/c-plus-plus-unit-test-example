@@ -19,7 +19,7 @@ vpath %.hpp $(INC_DIR)
 vpath %.o $(BUILD_DIR)
 
 TARGET	= $(BIN_DIR)/cpp-unit-test-example
-OBJS	= cpp-unit-test-example.o thread.o mutex.o producer.o consumer.o
+OBJS	= cpp-unit-test-example.o thread.o mutex.o conditional_var.o producer.o consumer.o
 
 all: $(TARGET)
 
@@ -39,6 +39,9 @@ $(BUILD_DIR)/thread.o: thread.cpp thread.hpp
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/mutex.o: mutex.cpp mutex.hpp
+	$(CC) $(CFLAGS) $< -o $@
+
+$(BUILD_DIR)/conditional_var.o: conditional_var.cpp conditional_var.hpp
 	$(CC) $(CFLAGS) $< -o $@
 
 install:

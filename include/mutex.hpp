@@ -5,6 +5,8 @@
 
 /**
  * Wrapping class for the pthread_mutex_t C API.
+ *
+ * @author	Ryan Chapin
  */
 class mutex
 {
@@ -18,6 +20,7 @@ class mutex
 		void lock();
 		void unlock();
 		bool trylock();
+		pthread_mutex_t * get_mutex();
 };
 
 #endif

@@ -5,6 +5,8 @@
 
 /**
  * Abstract base class for threads.
+ *
+ * @author	Ryan Chapin
  */
 class thread
 {
@@ -47,7 +49,7 @@ class thread
 		 */
 		void join();
 
-		void shutdown();
+		virtual void shutdown();
 };
 
 #endif

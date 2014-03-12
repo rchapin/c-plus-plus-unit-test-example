@@ -27,3 +27,8 @@ bool mutex::trylock()
 	return (pthread_mutex_trylock(&pthread_mutex) == 0);
 }
 
+pthread_mutex_t * mutex::get_mutex()
+{
+	return &pthread_mutex;
+}
+

@@ -3,6 +3,11 @@
 
 #include <string>
 
+/**
+ * Simple struct to store data for our example.
+ *
+ * @author	Ryan Chapin
+ */
 struct data_entry
 {
 	std::string * id;

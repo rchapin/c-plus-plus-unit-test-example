@@ -1,48 +1,95 @@
+#include <csignal>
 #include <iostream>
+#include <stdio.h>
 #include <string>
-//#include "../include/thread.hpp"
 #include "../include/producer.hpp"
 #include "../include/consumer.hpp"
 #include "../include/blocking_queue.hpp"
 #include "../include/data_entry.h"
+#include "../include/conditional_var.hpp"
 
-/*
-class thread_conc : public thread
-{
-	protected:
-		virtual void run();
-};
+#define	NUM_PRODUCERS 3
+#define	MAX_DATA_SIZE 10
+#define	NUM_CONSUMERS 5
 
-void thread_conc::run()
+mutex mtx;
+conditional_var c(&mtx);
+blocking_queue<data_entry> queue(&mtx);
+
+producer * producers[NUM_PRODUCERS];
+consumer * consumers[NUM_CONSUMERS];
+					
+	
+void signal_callback_handler(int signum)
 {
- 	std::cout << "From thread_conc run" << std::endl;
+	std::cout << "Caught signal " << signum << std::endl;
+
+	// Tell all of our threads to shutdown
+	for (int i = 0; i < NUM_PRODUCERS; ++i)
+	{
+		producers[i]->shutdown();
+	}
+
+	for (int i = 0; i < NUM_CONSUMERS; ++i)
+	{
+		consumers[i]->shutdown();
+	}
 }
-*/
 
 int main()
 {
-	std::cout << "Hello World!" << std::endl;
+	// Register the SIGINT signal and the signal handler
+	std::signal(SIGINT, signal_callback_handler);
 
-/*
-	thread_conc t1;
-	t1.start();
-	t1.join();
-*/
+	std::cout << "Starting cpp-unit-test-example..." << std::endl;
 
-	size_t max_data_size = 10;
- 	blocking_queue<data_entry> queue;
-  	mutex mtx;
+	char buff [64];
+	int n;
 
-	producer prod(&queue, "Producer 1");
-	prod.produce(10);
+	for (int i = 0; i < NUM_PRODUCERS; ++i)
+	{
+		// Concatenate the id for the producer
+		n = sprintf(buff, "Producer %d", (i + 1));
 
-	consumer cons1(&queue, &mtx, "Consumer 1");
-	cons1.consume();
-	consumer cons2(&queue, &mtx, "Consumer 2");
-	cons2.consume();
+		// Instantiate the producer and start the thread
+		producers[i] = new producer(&queue, &mtx, &c, buff);
+		producers[i]->produce(MAX_DATA_SIZE);
+	}
+	
+	for (int i = 0; i < NUM_CONSUMERS; ++i)
+	{
+		// Concatenate the id for the consumer
+		n = sprintf(buff, "Consumer %d", (i + 1));
 
-	prod.join();
-	cons1.join();
+		// Instantiate the consumer and start the thread
+		consumers[i] = new consumer(&queue, &mtx, &c, buff);
+		consumers[i]->consume();
+	}
+
+	// Join the current thread on all of the new threads
+	for (int i = 0; i < NUM_PRODUCERS; ++i)
+	{
+		producers[i]->join();
+	}
+
+	for (int i = 0; i < NUM_CONSUMERS; ++i)
+	{
+		consumers[i]->join();
+	}
+
+
+	// Delete our instances and set the pointers to NULL
+	for (int i = 0; i < NUM_PRODUCERS; ++i)
+	{
+		delete producers[i];
+		producers[i] = NULL;
+	}
+
+	for (int i = 0; i < NUM_CONSUMERS; ++i)
+	{
+		delete consumers[i];
+		consumers[i] = NULL;
+	}
 
 	return (0);
 }
