@@ -32,7 +32,7 @@ void producer::run()
 		}
 		mtx->unlock();
 
-		if (counter >= 10)
+		if (counter >= num_entries)
 		{
 			running = false;
 		}
