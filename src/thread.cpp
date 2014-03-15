@@ -1,5 +1,4 @@
 #include <iostream>
-
 #include "../include/thread.hpp"
 
 thread::~thread() {}

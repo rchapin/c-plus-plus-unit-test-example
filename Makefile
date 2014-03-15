@@ -1,9 +1,10 @@
-CC		= g++ -DBOOST_TEST_DYN_LINK
+CC		= g++
+BOOST_CC	= g++ -DBOOST_TEST_DYN_LINK
 DEBUG		= -g
 CFLAGS		= -v -c -Wall $(DEBUG)
 LFLAGS		= -v -Wall $(DEBUG)
-LDFLAGS		= -lpcap -lconfig++
-BOOST_LDFLAGS	= -L /usr/local/boost/stage/lib/ -lboost_unit_test_framework -lpthread
+LDFLAGS		= -lpthread
+BOOST_LDFLAGS	= -L /usr/local/boost/stage/lib/ -lboost_unit_test_framework 
 
 BIN_DIR		= bin
 BUILD_DIR	= build
@@ -24,7 +25,7 @@ OBJS	= cpp-unit-test-example.o thread.o mutex.o conditional_var.o producer.o con
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(LFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) $^ -o $@
+	$(CC) $(LFLAGS) $(LDFLAGS) $^ -o $@
 
 $(BUILD_DIR)/cpp-unit-test-example.o: cpp-unit-test-example.cpp
 	$(CC) $(CFLAGS) $< -o $@
@@ -32,7 +33,7 @@ $(BUILD_DIR)/cpp-unit-test-example.o: cpp-unit-test-example.cpp
 $(BUILD_DIR)/producer.o: producer.cpp producer.hpp
 	$(CC) $(CFLAGS) $< -o $@
 
-$(BUILD_DIR)/consumer.o: consumer.cpp consumer.hpp
+$(BUILD_DIR)/consumer.o: consumer.cpp consumer.hpp worker.hpp
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/thread.o: thread.cpp thread.hpp

@@ -3,30 +3,25 @@
 
 #include <string>
 #include "blocking_queue.hpp"
-#include "data_entry.h"
-#include "thread.hpp"
-#include "mutex.hpp"
 #include "conditional_var.hpp"
+#include "data_entry.h"
+#include "mutex.hpp"
+#include "thread.hpp"
+#include "worker.hpp"
 
 /**
  * Genric consumer class for producer/consumer example.
  *
  * @author	Ryan Chapin
  */
-class consumer : public thread
+class consumer : public worker
 {
-	private:
-		blocking_queue<data_entry> * queue;
-		mutex * mtx;
-		conditional_var * c;
-		std::string id;
-		
 	protected:
 		virtual void run();
 
 	public:
 		consumer(blocking_queue<data_entry> * queue, mutex * mtx, conditional_var * c, std::string id)
-			: queue(queue), mtx(mtx), c(c), id(id) {}
+			: worker(queue, mtx, c, id) {}
 
 		~consumer();
 
