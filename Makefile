@@ -1,28 +1,30 @@
-CC		= g++
-BOOST_CC	= g++ -DBOOST_TEST_DYN_LINK
-DEBUG		= -g
-CFLAGS		= -v -c -Wall $(DEBUG)
-LFLAGS		= -v -Wall $(DEBUG)
-LDFLAGS		= -lpthread
-BOOST_LDFLAGS	= -L /usr/local/boost/stage/lib/ -lboost_unit_test_framework 
+CC            = g++
+BOOST_CC      = g++ -DBOOST_TEST_DYN_LINK
+DEBUG         = -g
+CFLAGS        = -v -c -Wall $(DEBUG)
+LFLAGS        = -v -Wall $(DEBUG)
+LDFLAGS       = -lpthread
+BOOST_LDFLAGS = -L /usr/local/boost/stage/lib/ -lboost_unit_test_framework -lpthread
 
-BIN_DIR		= bin
-BUILD_DIR	= build
-DIST_DIR	= dist
-INC_DIR		= include
-SRC_DIR		= src
-TEST_DIR	= test
+BIN_DIR       = bin
+BUILD_DIR     = build
+DIST_DIR      = dist
+INC_DIR       = include
+SRC_DIR       = src
 
-vpath %.c $(SRC_DIR)
+vpath %.c   $(SRC_DIR)
 vpath %.cpp $(SRC_DIR)
-vpath %.h $(INC_DIR)
+vpath %.h   $(INC_DIR)
 vpath %.hpp $(INC_DIR)
-vpath %.o $(BUILD_DIR)
+vpath %.o   $(BUILD_DIR)
 
-TARGET	= $(BIN_DIR)/cpp-unit-test-example
-OBJS	= cpp-unit-test-example.o thread.o mutex.o conditional_var.o producer.o consumer.o
+TARGET = $(BIN_DIR)/cpp-unit-test-example
+OBJS   = cpp-unit-test-example.o thread.o mutex.o conditional_var.o producer.o consumer.o
 
-all: $(TARGET)
+BLOCKING_QUEUE_TEST_TARGET      = $(BIN_DIR)/blocking_queue_test
+BLOCKING_QUEUE_TEST_TARGET_OBJS = blocking_queue_test.o mutex.o
+
+all: $(TARGET) $(BLOCKING_QUEUE_TEST_TARGET)
 
 $(TARGET): $(OBJS)
 	$(CC) $(LFLAGS) $(LDFLAGS) $^ -o $@
@@ -46,10 +48,21 @@ $(BUILD_DIR)/conditional_var.o: conditional_var.cpp conditional_var.hpp
 	$(CC) $(CFLAGS) $< -o $@
 
 install:
-	echo "Not yet implemented..." 
+	@echo "Not yet implemented..." 
 
 clean:
-	\rm -rf ./bin/* ./build/*
+	$(info ******* cleaning ./bin/* and ./build/* *******)
+	@rm -rf ./bin/* ./build/*
 
+# Will run all of the tests
 test:
-	echo "Not yet implemented..."
+	$(info ******* Running tests *******)
+	@$(BIN_DIR)/blocking_queue_test
+
+$(BLOCKING_QUEUE_TEST_TARGET): $(BLOCKING_QUEUE_TEST_TARGET_OBJS)
+	$(BOOST_CC) $(LFLAGS) $(BOOST_LDFLAGS) $^ -o $@
+
+$(BUILD_DIR)/blocking_queue_test.o: $(INC_DIR)/blocking_queue_test.cpp blocking_queue.hpp
+	$(BOOST_CC) $(CFLAGS) $< -o $@
+
+
