@@ -24,7 +24,7 @@ struct mutex_fixture
 BOOST_FIXTURE_TEST_CASE(with_mtx_arg, mutex_fixture)
 {
 	blocking_queue<data_entry> * bq = new blocking_queue<data_entry>(mtx);
-	BOOST_CHECK(bq->get_mtx());
+	BOOST_CHECK(bq->get_mtx() != NULL);
 	delete bq;
 }
 
@@ -41,7 +41,8 @@ struct blocking_queue_wrapper
 	{
 		mtx = new mutex;
 		queue = new blocking_queue<data_entry>(mtx); 
-	}
+	}                                                        	
+	
 	~blocking_queue_wrapper()
 	{
 		delete queue;
@@ -59,3 +60,5 @@ BOOST_FIXTURE_TEST_CASE(non_zero_value, blocking_queue_wrapper)
 BOOST_AUTO_TEST_SUITE_END()
 
 
+
+								 
