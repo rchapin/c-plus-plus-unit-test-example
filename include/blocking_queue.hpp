@@ -18,6 +18,12 @@ template <class T> class blocking_queue
 		size_t max_data_size;
 		size_t spin_time;
 
+		/**
+		 * Default size set for the max_data_size
+		 * if a 0 or - value is set.
+		 */ 
+		const static int max_data_size_default = 5;
+
 	public:
 		blocking_queue(mutex * mtx) : mtx(mtx) {}
 		
@@ -52,7 +58,13 @@ template <class T> class blocking_queue
 		 */ 
 		void set_size(size_t max_data_size)
 		{
-			this->max_data_size = max_data_size;
+			if ( max_data_size <= 0 )
+			{
+				this->max_data_size = blocking_queue::max_data_size_default;
+			} else
+			{
+				this->max_data_size = max_data_size;
+			}
 		}
 
 		/**

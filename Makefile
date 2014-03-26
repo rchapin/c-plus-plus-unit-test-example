@@ -57,7 +57,7 @@ clean:
 # Will run all of the tests
 test:
 	$(info ******* Running tests *******)
-	@$(BIN_DIR)/blocking_queue_test
+	@$(BIN_DIR)/blocking_queue_test --log_level=test_suite
 
 $(BLOCKING_QUEUE_TEST_TARGET): $(BLOCKING_QUEUE_TEST_TARGET_OBJS)
 	$(BOOST_CC) $(LFLAGS) $(BOOST_LDFLAGS) $^ -o $@
