@@ -2,13 +2,14 @@
 #define	THREAD
 
 #include <pthread.h>
+#include "thread_t.hpp"
 
 /**
- * Abstract base class for threads.
+ * Abstract class for threads.
  *
  * @author	Ryan Chapin
  */
-class thread
+class thread : public thread_t
 {
 	private:
 		pthread_t pthread;
@@ -36,7 +37,7 @@ class thread
 
 	public:
 		thread() : running(false) {}
-		virtual ~thread();
+	       	virtual ~thread();
 
 		/**
 		 * Instantiates a new thread.

@@ -23,10 +23,11 @@ class producer : public worker
 	       virtual void run();
 	
 	public:
-		producer(blocking_queue<data_entry> * queue, mutex * mtx, conditional_var * c, std::string id)
+		producer(blocking_queue<data_entry> * queue, mutex * mtx,
+			conditional_var * c, std::string id, size_t num_entries)
 			: worker(queue, mtx, c, id)
 		{
-			num_entries = 0;
+			this->num_entries = num_entries;
 		}
 		
 		~producer();
@@ -37,7 +38,7 @@ class producer : public worker
 		 * @param[in]	num_entries The maximum number of items that
 		 *		            will be stored on the queue.
 		 */
-		void produce(size_t num_entries);	
+		// void produce(size_t num_entries);	
 };
 
 #endif

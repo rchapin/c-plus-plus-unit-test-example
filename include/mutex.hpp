@@ -2,13 +2,14 @@
 #define	MUTEX_HPP
 
 #include <pthread.h>
+#include "mutex_t.hpp"
 
 /**
  * Wrapping class for the pthread_mutex_t C API.
  *
  * @author	Ryan Chapin
  */
-class mutex
+class mutex : public mutex_t
 {
 	private:
 		pthread_mutex_t pthread_mutex;

@@ -20,12 +20,11 @@ class consumer : public worker
 		virtual void run();
 
 	public:
-		consumer(blocking_queue<data_entry> * queue, mutex * mtx, conditional_var * c, std::string id)
+		consumer(blocking_queue<data_entry> * queue, mutex * mtx,
+			conditional_var * c, std::string id)
 			: worker(queue, mtx, c, id) {}
 
 		~consumer();
-
-		void consume();
 
 		virtual void shutdown();
 };

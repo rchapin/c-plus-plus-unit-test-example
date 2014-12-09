@@ -44,18 +44,6 @@ consumer::~consumer()
 
 }
 
-void consumer::consume()
-{
-	std::cout << "[" << id << "] " << "consumer.consume" << std::endl;
-	
-	if (!queue || !mtx)
-	{
-		return;
-	}
-
-	start();
-}
-
 void consumer::shutdown()
 {
 	running = false;

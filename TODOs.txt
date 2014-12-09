@@ -1,0 +1,9 @@
+Go through and modify and pointers that are created, that aren't dynamically allocted, and in the context can never be null, to references.
+
+For instance, the blocking_queue, mutex and conditional_var cannot ever be null for these classes, so the members should probably be updated to be references instead of pointers.  Also, I don't think that I am doing any pointer arithmetic with them, so all the more reason to be references.
+
+Refactor the cpp-unit-test-example.cpp so that it is unit-testable:
+	. eliminate the global producer and consumer arrays and refactor so
+that those dependencies can be properly mocked.
+
+	

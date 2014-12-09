@@ -50,19 +50,3 @@ producer::~producer()
 	std::cout << "[" << id << "] " << "producer destructor" << std::endl;
 }
 
-void producer::produce(size_t num_entries)
-{
-	std::cout << "[" << id << "] " << "produce..." << std::endl;
-	if (!queue)
-	{
-		return;
-	}
-	if (num_entries <= 0 )
-	{
-		return;
-	}
-
-	this->num_entries = num_entries;
-	start();
-}
-							      	

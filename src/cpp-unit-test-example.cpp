@@ -112,8 +112,8 @@ int main(int argc, char* argv[])
 		n = sprintf(buff, "Producer %d", (i + 1));
 
 		// Instantiate the producer and start the thread
-		producers[i] = new producer(&queue, &mtx, &c, buff);
-		producers[i]->produce(max_data_size);
+		producers[i] = new producer(&queue, &mtx, &c, buff, max_data_size);
+		producers[i]->start();
 	}
 	
 	for (int i = 0; i < num_consumers; ++i)
@@ -123,7 +123,7 @@ int main(int argc, char* argv[])
 
 		// Instantiate the consumer and start the thread
 		consumers[i] = new consumer(&queue, &mtx, &c, buff);
-		consumers[i]->consume();
+		consumers[i]->start();
 	}
 
 	// Join the current thread on all of the new threads
